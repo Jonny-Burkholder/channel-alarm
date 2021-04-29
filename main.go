@@ -1,7 +1,5 @@
 package main
 
-//NOTE: this program will run indefinitely since it is meant to be always listening on the channel
-
 import (
 	"fmt"
 	"math/rand"
