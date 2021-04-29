@@ -44,6 +44,7 @@ func listen(c, c2 chan string) {
 		val, ok := <-c
 		if ok != true {
 			c2 <- "All alarms are off"
+			close(c2)
 			return
 		}
 		fmt.Println(val)
@@ -76,7 +77,11 @@ func main() {
 
 	go shutoff(a1, a2, a3)
 
-	fmt.Println(<-c2)
+	go func() {
+		wg.Wait()
+		close(c)
+		return
+	}()
 
-	wg.Wait()
+	fmt.Println(<-c2)
 }
