@@ -39,15 +39,17 @@ func (a *alarm) run(c chan string, wg *sync.WaitGroup) {
 	}
 }
 
+//listen accepts values on channel c and prints those values to std.Out. In the actual alarm, this
+//will call another function which will sound the alarm
 func listen(c, c2 chan string) {
 	for {
-		val, ok := <-c
-		if ok != true {
-			c2 <- "All alarms are off"
-			close(c2)
+		val, ok := <-c  //listen to see if c is still open, and if there are any new values
+		if ok != true { //if channel is closed
+			c2 <- "All alarms are off" //send on channel c2
+			close(c2)                  //close c2
 			return
 		}
-		fmt.Println(val)
+		fmt.Println(val) //print value to std.Out
 	}
 }
 
